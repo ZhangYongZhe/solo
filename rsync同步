@@ -1,0 +1,105 @@
+  。。实时同步
+ 一.部署公钥，私钥，实现ssh无密码登陆
+ 虚拟机A生成公私钥   ssh-keygen    生成的路径不要改直接回车    默认生成路径/root/.ssh/下
+二.传递公钥
+  [root@svr7 ~]# ssh-copy-id root@192.168.4.207     #传递公钥给192.168.4.207
+  
+id_rsa ：为私钥文件  id_rsa.pub :为公钥文件   known_hosts : 记录登陆用户文件   authorized_keys : 传递的公钥文件
+
+三.如何知道目录内容的变化，监控目录内容的变化
+1.真机传递软件包到虚拟机A中
+[root@room05pc45 ~]# scp /root/桌面/tools.tar.gz  root@192.168.4.7:/    #真机传递tools.tar.gz软件包
+在虚拟机A中解压tools.tar.gz到/root下
+            解压tar -xf /root/tools/inotify-tools-3.13.tar.gz -C /myrpm/
+
+ 。安装软件gcc与make 。切换到加压目录内 。 make编辑 。 make install 
+[root@svr7 inotify-tools-3.13]# which inotifywait  #查找命令对应的程序
+/usr/local/bin/inotifywait
+[root@svr7 inotify-tools-3.13]# echo $PATH  所有命令的对应程序的变量值
+
+ 	 inotifywait监控
+  		常用选项
+	-m , 持续监控
+	-r ，递归监控，包括子目录及文件
+	-q ，减少屏幕输出信息   -qq 可以没有输出信息
+	-e ，指定件事的事件类别
+2.安装inotify-tools工具源码包，实现监控目录内容的变化
+四。书写shell脚本
+
+    死循环 while
+格式：
+ #！/bin/bash                          #会一直循环 只要条件返回值为零
+  while    [条件]
+    do
+        循环执行的操作
+   done
+
+############################################################################################
+
+#!/bin/bash
+while inotifywait -rqq /opt
+ do
+ rsync -za --delete /opt/ root@193.168.4.207:/opt/
+done              #脚本实现实时监控和同步/opt/下的变化
+
+###################################################################################################
+
+ Coddler装机平台
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
